@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, Types } = require("mongoose");
 
 const validateEmail = function (email) {
   const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -26,13 +26,13 @@ const userSchema = new Schema(
     },
     thoughts: [
       {
-        type: Schema.Types.ObjectId,
+        type: Types.ObjectId,
         ref: "Thought",
       },
     ],
     friends: [
       {
-        type: Schema.Types.ObjectId,
+        type: Types.ObjectId,
         ref: "User",
       },
     ],

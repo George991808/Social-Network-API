@@ -66,17 +66,6 @@ module.exports = {
       .then((thought) =>
         !thought
           ? res.status(404).json({ message: "No such thought exists" })
-          : Course.findOneAndUpdate(
-              { thoughts: req.params.thoughtId },
-              { $pull: { thoughts: req.params.thoughtId } },
-              { new: true }
-            )
-      )
-      .then((course) =>
-        !course
-          ? res.status(404).json({
-              message: "Thought deleted, but no courses found",
-            })
           : res.json({ message: "Thought successfully deleted" })
       )
       .catch((err) => {
@@ -103,8 +92,8 @@ module.exports = {
     console.log(req.body);
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      { $addToSet: { reactions: req.body } },
-      { runValidators: true, new: true }
+
+      { $push: { reactions: req.body } }
     )
       .then((thought) =>
         !thought
