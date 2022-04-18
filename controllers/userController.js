@@ -33,7 +33,7 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No user with that ID" })
-          : Thought.deleteMany({ _id: { $in: user.thoughts } })
+          : Thought.deleteMany({ username: user.username })
       )
       .then(() => res.json({ message: "User and thoughts deleted!" }))
       .catch((err) => res.status(500).json(err));
@@ -48,6 +48,38 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No user with this id!" })
+          : res.json(user)
+      )
+      .catch((err) => res.status(500).json(err));
+  },
+  // Remove friend
+  // Add a friend to a thought
+  addFriend(req, res) {
+    console.log("You are adding a friend");
+    console.log(req.body);
+    User.findOneAndUpdate(
+      { _id: req.params.userId },
+
+      { $push: { friends: req.params.friendId } }
+    )
+      .then((user) =>
+        !user
+          ? res
+              .status(404)
+              .json({ message: "No thought found with that ID :(" })
+          : res.json(user)
+      )
+      .catch((err) => res.status(500).json(err));
+  },
+  // Remove friend from a user
+  removeFriend(req, res) {
+    User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $pull: { friends: { _id: req.params.friendId } } }
+    )
+      .then((user) =>
+        !user
+          ? res.status(404).json({ message: "No friend found with that ID :(" })
           : res.json(user)
       )
       .catch((err) => res.status(500).json(err));
