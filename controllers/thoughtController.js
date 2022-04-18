@@ -52,7 +52,12 @@ module.exports = {
   // create a new thought
   createThought(req, res) {
     Thought.create(req.body)
-      .then((thought) => res.json(thought))
+      .then((thought) =>
+        User.findOneAndUpdate(
+          { username: req.body.username },
+          { $push: { thoughts: thought } }
+        ).then((user) => res.json(thought))
+      )
       .catch((err) => res.status(500).json(err));
   },
   // Delete a thought and remove them from the course
