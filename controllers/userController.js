@@ -52,8 +52,8 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-  // Remove friend
-  // Add a friend to a thought
+
+  // Add a friend to a user, both ways
   addFriend(req, res) {
     console.log("You are adding a friend");
     console.log(req.body);
@@ -67,11 +67,15 @@ module.exports = {
           ? res
               .status(404)
               .json({ message: "No thought found with that ID :(" })
-          : res.json(user)
+          : User.findOneAndUpdate(
+              { _id: req.params.friendId },
+
+              { $push: { friends: req.params.userId } }
+            ).then(res.json(user))
       )
       .catch((err) => res.status(500).json(err));
   },
-  // Remove friend from a user
+  // Remove friend from a user, both ways
   removeFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
@@ -80,7 +84,10 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No friend found with that ID :(" })
-          : res.json(user)
+          : User.findOneAndUpdate(
+              { _id: req.params.friendId },
+              { $pull: { friends: { _id: req.params.userID } } }
+            ).then(res.json(user))
       )
       .catch((err) => res.status(500).json(err));
   },

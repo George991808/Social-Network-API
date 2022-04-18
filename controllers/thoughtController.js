@@ -1,29 +1,5 @@
-// ObjectId() method for converting thoughtId string into an ObjectId for querying database
-const { ObjectId } = require("mongoose").Types;
 const User = require("../models/User");
 const Thought = require("../models/Thought");
-
-// TODO: Create an aggregate function to get the number of thoughts overall
-const headCount = async () =>
-  Thought.aggregate()
-    // Your code here
-    .then((numberOfThoughts) => numberOfThoughts);
-
-// Execute the aggregate method on the Thought model and calculate the overall grade by using the $avg operator
-const grade = async (thoughtId) =>
-  Thought.aggregate([
-    // TODO: Ensure we include only the thought who can match the given ObjectId using the $match operator
-    {
-      // Your code here
-    },
-    {
-      $unwind: "$reactions",
-    },
-    // TODO: Group information for the thought with the given ObjectId alongside an overall grade calculated using the $avg operator
-    {
-      // Your code here
-    },
-  ]);
 
 module.exports = {
   // Get all thoughts
