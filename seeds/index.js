@@ -3,10 +3,10 @@ const seedThought = require("./thought-seed");
 const db = require("./../config/connection");
 const seedAll = async () => {
   await seedUser(5);
-  console.log("user seeded");
+  console.log("users seeded");
 
-  await seedThought(5);
-  console.log("thought seeded");
+  // await seedThought(5);
+  // console.log("thought seeded");
   process.exit(0);
 };
 db.once("open", () => {
